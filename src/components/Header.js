@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { LOGO_URL } from "../utils/constants";
 import { handleSearch } from "./Body"
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
   const [loginBtn, setLoginBtn] = useState("Login");
@@ -16,7 +17,9 @@ const Header = () => {
       </div>
       <div className="nav-items">
         <ul className="item-list">
-          
+          <li><NavLink style={{textDecoration: "none", color: "black"}} to="/">Home</NavLink></li>
+          <li><NavLink style={{textDecoration: "none", color: "black"}} to="/about">About Us</NavLink></li>
+          <li><NavLink style={{textDecoration: "none", color: "black"}} to="/contact">Contact Us</NavLink></li>
           <li>Offers</li>
           <li>Help</li>
           <li onClick={handleLoginBtn}>{loginBtn}</li>

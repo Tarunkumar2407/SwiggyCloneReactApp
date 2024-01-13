@@ -2,6 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Body from "./components/Body";
+import { createBrowserRouter, RouterProvider, Outlet} from "react-router-dom";
+import AboutUs from "./components/AboutUs";
+import ContactUs from "./components/ContactUs";
+import ErrorPage from "./components/ErrorPage";
+import RestaurantMenu from "./components/RestaurantMenu";
 
 // const resObj = {
 //         "info": {
@@ -103,13 +108,38 @@ const AppLayoout = () => {
   return (
     <div>
       <Header />
-      <Body />
+      <Outlet />
     </div>
   );
 };
 
+const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <AppLayoout />,
+    children: [
+      {
+        path: "/",
+        element: <Body />
+      },
+      {
+        path: "/about",
+        element: <AboutUs />
+      },
+      {
+        path: "/contact",
+        element: <ContactUs />
+      },
+      {
+        path: "/restaurants/:resId",
+        element: <RestaurantMenu />
+      }
+    ],
+    errorElement: <ErrorPage />
+  } 
+])
 // const heading = React.createElement("h1", {}, "hello world")
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(<AppLayoout />);
+root.render(<RouterProvider router={appRouter}/>);
