@@ -4,12 +4,15 @@ import { restaurantList } from "../utils/appData";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { NavLink } from "react-router-dom";
+import useOnlineStatus from "./useOnlineStatus";
 
 const Body = () => {
 
     const[listOfRestaurant, setListOfRestaurant] = useState([]);
     const [searchText, setSearchText] = useState("");
     const [filterBySearchList, setFilterBySearchList] = useState([]);
+    const onlineStatus = useOnlineStatus();
+    console.log(onlineStatus)
 
     const handleGetData = async () => {
          const response = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.872315040853184&lng=78.75272217779278&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING")
@@ -24,12 +27,12 @@ const Body = () => {
         console.log('use effect')
     }, [])
 
-    if(listOfRestaurant.length === 0){
-        console.log('reslist empty')
-        return (
-            <Shimmer />
-        )
-    }
+    // if(listOfRestaurant.length === 0){
+    //     console.log('reslist empty')
+    //     return (
+    //         <Shimmer />
+    //     )
+    // }
 
     const handleSortingOfRestaurant = () => {
        console.log("i am clicked")
@@ -42,7 +45,11 @@ const Body = () => {
         setFilterBySearchList(filterBySearch)
     }
 
-  return (
+    if(onlineStatus === false) {
+        return <h1>It seems that you are offline!! Please check your internet connections</h1>
+    }
+
+  return (listOfRestaurant.length === 0) ? <Shimmer /> : (
     <>
       <div style={{marginLeft: "22px"}}>
             <input className="input-box" value={searchText} onChange={(e) => setSearchText(e.target.value)} placeholder="Search by restaurant name"></input>
